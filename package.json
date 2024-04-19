@@ -1,11 +1,22 @@
 {
   "name": "fintree-api",
-  "version": "1.0.0",
-  "main": "index.js",
+  "module": "index.ts",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint src/app.ts"
   },
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "hono": "^4.2.4"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.1.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.5"
+  }
 }

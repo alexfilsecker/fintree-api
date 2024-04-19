@@ -1,0 +1,20 @@
+services:
+  fintree-api:
+    image: fintree-api
+    container_name: fintree-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bun src/app.ts
+    ports:
+      - 3030:3030
+    volumes:
+      - ./src/:/app/src
+    networks:
+      - fintree-net
+
+networks:
+  fintree-net:
+    driver: bridge
+    name: fintree-net
+
