@@ -2,11 +2,8 @@ import { Hono } from 'hono';
 
 const app = new Hono();
 
-app.get('/', (c) => {
-  return c.json({ hello: 'world pene' });
+app.get('/', () => {
+  return new Response('Hello, World!');
 });
 
-Bun.serve({
-  fetch: app.fetch,
-  port: 3030,
-});
+export default app;
