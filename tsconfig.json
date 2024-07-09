@@ -1,27 +1,15 @@
 {
   "compilerOptions": {
-    // Enable latest features
-    "lib": ["ESNext", "DOM"],
-    "target": "ESNext",
-    "module": "ESNext",
-    "moduleDetection": "force",
-    "jsx": "react-jsx",
-    "allowJs": true,
-
-    // Bundler mode
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "noEmit": true,
-
-    // Best practices
-    "strict": true,
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-
-    // Some stricter flags (disabled by default)
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
-  }
+    "target": "es5", // Set the target JavaScript version (e.g., es2015, esnext)
+    "module": "commonjs", // Specify the module system (e.g., commonjs, amd, system)
+    "strict": true, // Enable strict type checking
+    "noImplicitAny": true, // Disallow implicit 'any' type
+    "esModuleInterop": true, // Enable ES module interop for TypeScript 2.5+
+    "sourceMap": true, // Generate source maps for debugging
+    "outDir": "dist", // Output directory for compiled JavaScript
+    "baseUrl": "src", // Base directory for resolving non-relative modules
+    "allowJs": true // Allow compilation of JavaScript files (optional)
+  },
+  "include": ["src/**/*.ts"], // Include all TypeScript files in the 'src' directory
+  "exclude": ["node_modules"] // Exclude the 'node_modules' folder
 }

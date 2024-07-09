@@ -1,0 +1,39 @@
+services:
+  fintree-api:
+    image: fintree-api
+    container_name: fintree-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: bun src/app.ts
+    env_file:
+      - .env
+    ports:
+      - 3030:3030
+    volumes:
+      - ./src/:/app/src
+    networks:
+      - fintree-network
+
+  fintree-db:
+    image: postgres
+    container_name: fintree-db
+    environment:
+      POSTGRES_USER: fintree
+      POSTGRES_PASSWORD: fintree
+      POSTGRES_DB: fintree
+    ports:
+      - 5432:5432
+    volumes:
+      - fintree-db-data:/var/lib/postgresql/data
+    networks:
+      - fintree-network
+
+volumes:
+  fintree-db-data:
+    name: fintree-db-data
+
+networks:
+  fintree-network:
+    driver: bridge
+    name: fintree-network
