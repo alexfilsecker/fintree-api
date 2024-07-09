@@ -8,7 +8,10 @@
     "sourceMap": true, // Generate source maps for debugging
     "outDir": "dist", // Output directory for compiled JavaScript
     "baseUrl": "src", // Base directory for resolving non-relative modules
-    "allowJs": true // Allow compilation of JavaScript files (optional)
+    "allowJs": true, // Allow compilation of JavaScript files (optional)
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts"], // Include all TypeScript files in the 'src' directory
   "exclude": ["node_modules"] // Exclude the 'node_modules' folder
