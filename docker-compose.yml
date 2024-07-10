@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: bun dev
+    command: npm run dev
     env_file:
       - .env
     ports:

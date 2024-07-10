@@ -1,16 +1,46 @@
 import { Context } from 'hono';
 import controllerAction, { NormalResponse } from './controllerAction';
+import { LoginBodyType } from '../validators/authValidator';
+import prisma from '../utils/prismaClient';
+import { compareSync } from 'bcrypt';
+import makeTokens from '../utils/tokens/makeTokens';
 
 type LoginResponse = {
   token: string;
   refreshToken: string;
 };
 
-export const loginAction = async (
-  _: Context
-): Promise<NormalResponse & Record<'responseData', LoginResponse>> => {
+type LoginActionResponse =
+  | (NormalResponse & Record<'responseData', LoginResponse>)
+  | (NormalResponse & Omit<NormalResponse, 'responseData'>);
+
+export const loginAction = async (c: Context): Promise<LoginActionResponse> => {
+  const { username, password } = await c.req.json<LoginBodyType>();
+
+  const userWithUsername = await prisma.user.findUnique({
+    where: { username },
+  });
+  console.log('🚀 - userWithUsername:', userWithUsername);
+
+  if (userWithUsername === null) {
+    return {
+      status: 401,
+      message: 'username does not exist',
+    };
+  }
+
+  console.log(userWithUsername.password, password);
+  const validPassword = compareSync(password, userWithUsername.password);
+
+  if (!validPassword) {
+    return {
+      status: 401,
+      message: 'password is incorrect',
+    };
+  }
+
   return {
-    responseData: { token: 'Login', refreshToken: 'semen' },
+    responseData: makeTokens(userWithUsername),
   };
 };
 

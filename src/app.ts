@@ -9,10 +9,6 @@ app.get('/', () => {
   return new Response('Hello, World!');
 });
 
-// app.post('/scrap', () => {
-//   return new Response('Update');
-// });
-
 app.route('/auth', authRouter);
 
-export default app;
+serve({ fetch: app.fetch });
