@@ -1,8 +1,17 @@
 import { Context } from 'hono';
 import controllerAction, { NormalResponse } from './controllerAction';
 
-const loginAction = async (c: Context): Promise<NormalResponse> => {
-  return { responseData: 'Login', status: 200 };
+type LoginResponse = {
+  token: string;
+  refreshToken: string;
+};
+
+export const loginAction = async (
+  _: Context
+): Promise<NormalResponse & Record<'responseData', LoginResponse>> => {
+  return {
+    responseData: { token: 'Login', refreshToken: 'semen' },
+  };
 };
 
 const authController = {

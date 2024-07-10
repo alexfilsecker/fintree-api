@@ -1,19 +1,17 @@
-import { Context } from 'hono';
+import { Context, MiddlewareHandler, Next } from 'hono';
 import { StatusCode } from 'hono/utils/http-status';
 
-export type NormalResponse = { responseData: unknown; status: number };
+export type NormalResponse = { responseData: unknown; status?: StatusCode };
 
 const controllerAction = async (
   c: Context,
   action: (c: Context) => Promise<NormalResponse>
 ) => {
-  let response: NormalResponse;
-  let responseStatus: StatusCode = 200;
-
-  response = await action(c);
+  const actionResponse = await action(c);
+  const responseStatus = actionResponse.status || 200;
 
   c.status(responseStatus);
-  return c.json(response);
+  return c.json(actionResponse);
 };
 
 export default controllerAction;
