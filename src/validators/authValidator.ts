@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { zValidator } from '@hono/zod-validator';
-import validationError from '../errors/validationError';
+import validationError from './validationError';
 import { MiddlewareHandler } from 'hono';
 
 const loginSchema = z.object({
