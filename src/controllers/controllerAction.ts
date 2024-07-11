@@ -20,13 +20,12 @@ const controllerAction = async (
   action: (c: Context) => Promise<unknown>
 ) => {
   let actionResponse: unknown;
-  let responseStatus: StatusCode = 200;
   let response: MyResponse;
   try {
     actionResponse = await action(c);
   } catch (error) {
     const { errorStatus, errorData } = handleError(error);
-    c.status(responseStatus);
+    c.status(errorStatus);
     response = {
       status: errorStatus,
       errorData,
@@ -34,8 +33,10 @@ const controllerAction = async (
     return c.json(response);
   }
 
+  const responseStatus = 200;
+
   response = {
-    status: 200,
+    status: responseStatus,
     responseData: actionResponse,
   };
 
