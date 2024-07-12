@@ -19,13 +19,15 @@ model User {
   password String
 
   userInstitutionCredentials UserInstitutionCredentials[]
-  // categories Category[]
+  categories Category[]
+  movements Movement[]
 }
 
 model Institution {
   id Int @id @default(autoincrement())
   name String
 
+  movements Movement[]
   userInstitutionCredentials UserInstitutionCredentials[]
 }
 
@@ -42,15 +44,37 @@ model UserInstitutionCredentials {
   institution Institution @relation(fields: [institutionId], references: [id])
 }
 
-// model Category {
-//   id Int @id @default(autoincrement())
-//   userId Int
-//   parentCategoryId Int?
-//   name String
-//   description String?
-//   categories Category[] @relation("SubCategories")
+model Category {
+  id Int @id @default(autoincrement())
+  userId Int
+  parentCategoryId Int?
+  name String
+  description String?
 
-//   user User @relation(fields: [userId], references: [id])
-//   parentCategory Category? @relation("SubCategories", fields: [parentCategoryId], references: [id])
+  categories Category[] @relation("SubCategories")
+  user User @relation(fields: [userId], references: [id])
+  parentCategory Category? @relation("SubCategories", fields: [parentCategoryId], references: [id])
+  movements Movement[]
+}
 
-// }
+model GroupMovement {
+  id Int @id @default(autoincrement())
+  name String?
+  description String?
+
+  movements Movement[]
+}
+
+model Movement {
+  id Int @id @default(autoincrement())
+  userId Int
+  institutionId Int
+  groupMovementId Int
+  categoryId Int?
+  
+
+  user User @relation(fields: [userId], references: [id])
+  institution Institution @relation(fields: [institutionId], references: [id])
+  groupMovement GroupMovement @relation(fields: [groupMovementId], references: [id])
+  category Category? @relation(fields: [categoryId], references: [id])
+}
