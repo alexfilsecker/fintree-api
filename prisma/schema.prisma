@@ -17,4 +17,40 @@ model User {
   id Int @id @default(autoincrement())
   username String @unique
   password String
+
+  userInstitutionCredentials UserInstitutionCredentials[]
+  // categories Category[]
 }
+
+model Institution {
+  id Int @id @default(autoincrement())
+  name String
+
+  userInstitutionCredentials UserInstitutionCredentials[]
+}
+
+model UserInstitutionCredentials {
+  id Int @id @default(autoincrement())
+  userId Int
+  institutionId Int
+  username String
+  password String
+
+  @@unique([userId, institutionId])
+
+  user User @relation(fields: [userId], references: [id])
+  institution Institution @relation(fields: [institutionId], references: [id])
+}
+
+// model Category {
+//   id Int @id @default(autoincrement())
+//   userId Int
+//   parentCategoryId Int?
+//   name String
+//   description String?
+//   categories Category[] @relation("SubCategories")
+
+//   user User @relation(fields: [userId], references: [id])
+//   parentCategory Category? @relation("SubCategories", fields: [parentCategoryId], references: [id])
+
+// }

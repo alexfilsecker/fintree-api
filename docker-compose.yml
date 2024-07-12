@@ -12,6 +12,7 @@ services:
       - 3030:3000
     volumes:
       - ./src/:/app/src
+      - ./prisma/:/app/prisma
     networks:
       - fintree-network
 
