@@ -6,7 +6,7 @@ const makeTokens = (user: User): { token: string; refreshToken: string } => {
   const {
     tokenSecretKey,
     refreshTokenSecretKey,
-    tokenExprationTime,
+    // tokenExprationTime,
     refreshTokenExprationTime,
   } = getTokenEnvs();
 
@@ -15,7 +15,8 @@ const makeTokens = (user: User): { token: string; refreshToken: string } => {
     username: user.username,
   };
   const token = jwt.sign(userTokenData, tokenSecretKey, {
-    expiresIn: tokenExprationTime,
+    // expiresIn: tokenExprationTime,
+    expiresIn: '5s',
   });
 
   const refreshTokenData = { userId: user.id };

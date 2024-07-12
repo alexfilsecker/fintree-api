@@ -3,6 +3,7 @@ import { cors } from 'hono/cors';
 import { serve } from '@hono/node-server';
 
 import authRouter from './routes/authRouter';
+import verifyToken from './middleware/verifyToken';
 
 const app = new Hono();
 
@@ -17,5 +18,7 @@ app.get('/', () => {
 });
 
 app.route('/auth', authRouter);
+
+app.use(verifyToken);
 
 serve({ fetch: app.fetch });
