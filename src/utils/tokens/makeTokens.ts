@@ -2,6 +2,11 @@ import getTokenEnvs from './getTokenEnvs';
 import { User } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 
+export type TokenData = {
+  userId: number;
+  username: string;
+};
+
 const makeTokens = (user: User): { token: string; refreshToken: string } => {
   const {
     tokenSecretKey,
@@ -10,7 +15,7 @@ const makeTokens = (user: User): { token: string; refreshToken: string } => {
     refreshTokenExprationTime,
   } = getTokenEnvs();
 
-  const userTokenData = {
+  const userTokenData: TokenData = {
     userId: user.id,
     username: user.username,
   };

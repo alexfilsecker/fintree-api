@@ -24,4 +24,13 @@ type CLoginError = NormalError & {
   errorIn: ErrorInType;
 };
 
-export type ErrorData = CUnknownError | CError | CValidationError | CLoginError;
+type CTokenError = NormalError & {
+  type: 'TokenError';
+};
+
+export type ErrorData =
+  | CUnknownError
+  | CError
+  | CValidationError
+  | CLoginError
+  | CTokenError;

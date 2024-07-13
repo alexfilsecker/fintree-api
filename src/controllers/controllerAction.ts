@@ -8,7 +8,7 @@ type SuccesfulResponse = {
   responseData: unknown;
 };
 
-type ErrorResponse = {
+export type ErrorResponse = {
   status: StatusCode;
   errorData: ErrorData;
 };
