@@ -1,4 +1,4 @@
-import { MyResponse } from '../controllers/controllerAction';
+import { MyResponse } from '../../controllers/controllerAction';
 import { Context } from 'hono';
 import { ZodError } from 'zod';
 

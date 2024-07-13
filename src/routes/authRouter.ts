@@ -1,6 +1,9 @@
 import authController from '../controllers/authController';
 import { Hono } from 'hono';
-import { loginValidator, refreshValidator } from '../validators/authValidator';
+import {
+  loginValidator,
+  refreshValidator,
+} from '../middleware/validators/authValidator';
 
 const authRouter = new Hono();
 

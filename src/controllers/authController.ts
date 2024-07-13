@@ -1,6 +1,9 @@
 import { Context } from 'hono';
 import controllerAction from './controllerAction';
-import { LoginBodyType, RefreshBodyType } from '../validators/authValidator';
+import {
+  LoginBodyType,
+  RefreshBodyType,
+} from '../middleware/validators/authValidator';
 import prisma from '../utils/prismaClient';
 import { compareSync } from 'bcrypt';
 import makeTokens from '../utils/tokens/makeTokens';
