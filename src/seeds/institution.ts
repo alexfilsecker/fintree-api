@@ -8,11 +8,11 @@ export const institutionsData: InstitutionsData<'santander' | 'commonWealth'> =
   {
     santander: {
       id: 1,
-      name: 'Santander',
+      name: 'SANTANDER',
     },
     commonWealth: {
       id: 2,
-      name: 'Commonwealth Bank',
+      name: 'COMMONWEALTH',
     },
   };
 

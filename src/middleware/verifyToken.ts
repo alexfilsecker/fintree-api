@@ -16,13 +16,15 @@ const noTokenError = (context: Context) => {
   return response;
 };
 
-type E = Env & {
+type TokenizedEnv = Env & {
   Variables: {
     tokenData: jwt.JwtPayload & TokenData;
   };
 };
 
-const verifyToken = async (context: Context<E>, next: Next) => {
+export type TokenizedContext = Context<TokenizedEnv>;
+
+const verifyToken = async (context: TokenizedContext, next: Next) => {
   let token = context.req.header('Authorization');
   if (token === undefined) {
     return context.json(noTokenError(context));

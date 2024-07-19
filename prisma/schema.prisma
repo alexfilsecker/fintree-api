@@ -25,10 +25,15 @@ model User {
 
 model Institution {
   id Int @id @default(autoincrement())
-  name String
+  name InstitutionNames
 
   movements Movement[]
   userInstitutionCredentials UserInstitutionCredentials[]
+}
+
+enum InstitutionNames {
+  SANTANDER
+  COMMONWEALTH
 }
 
 model UserInstitutionCredentials {
@@ -69,12 +74,21 @@ model Movement {
   id Int @id @default(autoincrement())
   userId Int
   institutionId Int
-  groupMovementId Int
+  groupMovementId Int?
   categoryId Int?
+  pending Boolean @default(false)
+  date String
+  valueDate String
+  description String
+  userDescription String?
+  ammount Float
+  balance Float?
+
+  @@unique([userId, institutionId, valueDate, description, ammount])
   
 
   user User @relation(fields: [userId], references: [id])
   institution Institution @relation(fields: [institutionId], references: [id])
-  groupMovement GroupMovement @relation(fields: [groupMovementId], references: [id])
+  groupMovement GroupMovement? @relation(fields: [groupMovementId], references: [id])
   category Category? @relation(fields: [categoryId], references: [id])
 }
