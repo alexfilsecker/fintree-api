@@ -81,10 +81,10 @@ model Movement {
   valueDate String
   description String
   userDescription String?
-  ammount Float
+  amount Float
   balance Float?
 
-  @@unique([userId, institutionId, valueDate, description, ammount])
+  @@unique([userId, institutionId, valueDate, description, amount])
   
 
   user User @relation(fields: [userId], references: [id])

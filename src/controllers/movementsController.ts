@@ -19,7 +19,7 @@ const getMovementsAction = async (context: TokenizedContext) => {
         },
       },
       pending: true,
-      ammount: true,
+      amount: true,
       date: true,
       valueDate: true,
       description: true,
@@ -30,7 +30,7 @@ const getMovementsAction = async (context: TokenizedContext) => {
   const movements = movementsPrisma.map((movement) => ({
     institution: movement.institution.name,
     pending: movement.pending,
-    ammount: movement.ammount,
+    ammount: movement.amount,
     date: movement.date,
     valueDate: movement.valueDate,
     description: movement.description,

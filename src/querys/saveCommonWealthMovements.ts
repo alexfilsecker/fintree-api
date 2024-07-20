@@ -12,18 +12,18 @@ const saveCommonWealthMovements = async (
     movements.pending.movements.map(async (movement) => {
       await prisma.movement.upsert({
         where: {
-          userId_institutionId_valueDate_description_ammount: {
+          userId_institutionId_valueDate_description_amount: {
             userId: userId,
             institutionId: institutionId,
             valueDate: movement.value_date,
-            ammount: movement.ammount,
+            amount: movement.ammount,
             description: movement.description,
           },
         },
         create: {
           userId: userId,
           institutionId: institutionId,
-          ammount: movement.ammount,
+          amount: movement.ammount,
           date: movement.date,
           valueDate: movement.value_date,
           pending: true,
@@ -41,11 +41,11 @@ const saveCommonWealthMovements = async (
     movements.non_pending.map(async (movement) => {
       await prisma.movement.upsert({
         where: {
-          userId_institutionId_valueDate_description_ammount: {
+          userId_institutionId_valueDate_description_amount: {
             userId: userId,
             institutionId: institutionId,
             valueDate: movement.value_date,
-            ammount: movement.ammount,
+            amount: movement.ammount,
             description: movement.description,
           },
         },
@@ -54,7 +54,7 @@ const saveCommonWealthMovements = async (
           institutionId: institutionId,
           date: movement.date,
           valueDate: movement.value_date,
-          ammount: movement.ammount,
+          amount: movement.ammount,
           balance: movement.balance,
           description: movement.description,
           pending: false,
