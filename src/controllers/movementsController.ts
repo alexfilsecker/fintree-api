@@ -5,6 +5,41 @@ import prisma from '../utils/prismaClient';
 import { requestCommonWealthScrap } from '../service/scraper';
 import saveCommonWealthMovements from '../querys/saveCommonWealthMovements';
 
+const getMovementsAction = async (context: TokenizedContext) => {
+  const token = context.var.tokenData;
+
+  const movementsPrisma = await prisma.movement.findMany({
+    where: {
+      userId: token.userId,
+    },
+    select: {
+      institution: {
+        select: {
+          name: true,
+        },
+      },
+      pending: true,
+      ammount: true,
+      date: true,
+      valueDate: true,
+      description: true,
+      userDescription: true,
+    },
+  });
+
+  const movements = movementsPrisma.map((movement) => ({
+    institution: movement.institution.name,
+    pending: movement.pending,
+    ammount: movement.ammount,
+    date: movement.date,
+    valueDate: movement.valueDate,
+    description: movement.description,
+    userDescription: movement.userDescription,
+  }));
+
+  return { movements };
+};
+
 const scrapAction = async (context: TokenizedContext) => {
   const token = context.var.tokenData;
 
@@ -18,6 +53,7 @@ const scrapAction = async (context: TokenizedContext) => {
       institution: {
         select: {
           id: true,
+
           name: true,
         },
       },
@@ -49,6 +85,7 @@ const scrapAction = async (context: TokenizedContext) => {
 
 const movementController = {
   scrap: async (c: Context) => controllerAction(c, scrapAction),
+  getMovements: async (c: Context) => controllerAction(c, getMovementsAction),
 };
 
 export default movementController;
