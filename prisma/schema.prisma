@@ -26,6 +26,7 @@ model User {
 model Institution {
   id Int @id @default(autoincrement())
   name InstitutionNames
+  currency Currencys
 
   movements Movement[]
   userInstitutionCredentials UserInstitutionCredentials[]
@@ -34,6 +35,11 @@ model Institution {
 enum InstitutionNames {
   SANTANDER
   COMMONWEALTH
+}
+
+enum Currencys {
+  CLP
+  AUD
 }
 
 model UserInstitutionCredentials {
