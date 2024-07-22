@@ -14,22 +14,19 @@ datasource db {
 }
 
 model User {
-  id Int @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   username String @unique
   password String
 
-  userInstitutionCredentials UserInstitutionCredentials[]
-  categories Category[]
-  movements Movement[]
+  credentials Credentials[]
+  categories  Category[]
 }
 
 model Institution {
-  id Int @id @default(autoincrement())
+  id   Int              @id @default(autoincrement())
   name InstitutionNames
-  currency Currencys
 
-  movements Movement[]
-  userInstitutionCredentials UserInstitutionCredentials[]
+  credentials Credentials[]
 }
 
 enum InstitutionNames {
@@ -37,64 +34,79 @@ enum InstitutionNames {
   COMMONWEALTH
 }
 
+model Credentials {
+  id            Int    @id @default(autoincrement())
+  institutionId Int
+  userId        Int
+  username      String
+  password      String
+
+  user        User        @relation(fields: [userId], references: [id])
+  institution Institution @relation(fields: [institutionId], references: [id])
+  accounts    Account[]
+
+  @@unique([userId, institutionId])
+}
+
+model Account {
+  id            Int       @id @default(autoincrement())
+  credentialsId Int
+  name          AccountNames
+  currency      Currencys
+
+  credentials Credentials @relation(fields: [credentialsId], references: [id])
+  movements   Movement[]
+}
+
+enum AccountNames {
+  SMART_ACCESS
+  CURRENT_ACCOUNT
+  GOLD_LATAM
+  PLATINUM_LATAM
+}
+
 enum Currencys {
   CLP
   AUD
 }
 
-model UserInstitutionCredentials {
-  id Int @id @default(autoincrement())
-  userId Int
-  institutionId Int
-  username String
-  password String
-
-  @@unique([userId, institutionId])
-
-  user User @relation(fields: [userId], references: [id])
-  institution Institution @relation(fields: [institutionId], references: [id])
-}
-
 model Category {
-  id Int @id @default(autoincrement())
-  userId Int
+  id               Int     @id @default(autoincrement())
+  userId           Int
   parentCategoryId Int?
-  name String
-  description String?
+  name             String
+  description      String?
 
-  categories Category[] @relation("SubCategories")
-  user User @relation(fields: [userId], references: [id])
-  parentCategory Category? @relation("SubCategories", fields: [parentCategoryId], references: [id])
-  movements Movement[]
+  categories     Category[] @relation("SubCategories")
+  user           User       @relation(fields: [userId], references: [id])
+  parentCategory Category?  @relation("SubCategories", fields: [parentCategoryId], references: [id])
+  movements      Movement[]
 }
 
 model GroupMovement {
-  id Int @id @default(autoincrement())
-  name String?
+  id          Int     @id @default(autoincrement())
+  name        String?
   description String?
 
   movements Movement[]
 }
 
 model Movement {
-  id Int @id @default(autoincrement())
-  userId Int
-  institutionId Int
+  id              Int     @id @default(autoincrement())
+  accountId       Int
   groupMovementId Int?
-  categoryId Int?
-  pending Boolean @default(false)
-  date String
-  valueDate String
-  description String
+  categoryId      Int?
+  pending         Boolean @default(false)
+  date            String
+  valueDate       String
+  description     String
   userDescription String?
-  amount Float
-  balance Float?
+  amount          Float
+  balance         Float?
 
-  @@unique([userId, institutionId, valueDate, description, amount])
-  
-
-  user User @relation(fields: [userId], references: [id])
-  institution Institution @relation(fields: [institutionId], references: [id])
+  account       Account        @relation(fields: [accountId], references: [id])
   groupMovement GroupMovement? @relation(fields: [groupMovementId], references: [id])
-  category Category? @relation(fields: [categoryId], references: [id])
+  category      Category?      @relation(fields: [categoryId], references: [id])
+
+  @@unique([accountId, valueDate, description, amount])
 }

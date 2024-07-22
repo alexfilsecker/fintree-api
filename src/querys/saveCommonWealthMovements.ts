@@ -3,8 +3,7 @@ import prisma from '../utils/prismaClient';
 
 const saveCommonWealthMovements = async (
   movements: CommonWealthReturnData,
-  userId: number,
-  institutionId: number
+  accountId: number
 ) => {
   console.log(movements);
 
@@ -12,17 +11,15 @@ const saveCommonWealthMovements = async (
     movements.pending.movements.map(async (movement) => {
       await prisma.movement.upsert({
         where: {
-          userId_institutionId_valueDate_description_amount: {
-            userId: userId,
-            institutionId: institutionId,
+          accountId_valueDate_description_amount: {
+            accountId: accountId,
             valueDate: movement.value_date,
             amount: movement.ammount,
             description: movement.description,
           },
         },
         create: {
-          userId: userId,
-          institutionId: institutionId,
+          accountId: accountId,
           amount: movement.ammount,
           date: movement.date,
           valueDate: movement.value_date,
@@ -41,17 +38,15 @@ const saveCommonWealthMovements = async (
     movements.non_pending.map(async (movement) => {
       await prisma.movement.upsert({
         where: {
-          userId_institutionId_valueDate_description_amount: {
-            userId: userId,
-            institutionId: institutionId,
+          accountId_valueDate_description_amount: {
+            accountId: accountId,
             valueDate: movement.value_date,
             amount: movement.ammount,
             description: movement.description,
           },
         },
         create: {
-          userId: userId,
-          institutionId: institutionId,
+          accountId: accountId,
           date: movement.date,
           valueDate: movement.value_date,
           amount: movement.ammount,

@@ -10,13 +10,22 @@ const getMovementsAction = async (context: TokenizedContext) => {
 
   const movementsPrisma = await prisma.movement.findMany({
     where: {
-      userId: token.userId,
+      account: { credentials: { userId: token.userId } },
     },
     select: {
-      institution: {
+      account: {
         select: {
-          name: true,
+          id: true,
           currency: true,
+          credentials: {
+            select: {
+              institution: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
         },
       },
       pending: true,
@@ -29,14 +38,14 @@ const getMovementsAction = async (context: TokenizedContext) => {
   });
 
   const movements = movementsPrisma.map((movement) => ({
-    institution: movement.institution.name,
+    institution: movement.account.credentials.institution.name,
     pending: movement.pending,
     amount: movement.amount,
     date: movement.date,
     valueDate: movement.valueDate,
     description: movement.description,
     userDescription: movement.userDescription,
-    currency: movement.institution.currency,
+    currency: movement.account.currency,
   }));
 
   return { movements };
@@ -45,7 +54,7 @@ const getMovementsAction = async (context: TokenizedContext) => {
 const scrapAction = async (context: TokenizedContext) => {
   const token = context.var.tokenData;
 
-  const userCredentials = await prisma.userInstitutionCredentials.findMany({
+  const userCredentials = await prisma.credentials.findMany({
     where: {
       userId: token.userId,
     },
@@ -54,8 +63,12 @@ const scrapAction = async (context: TokenizedContext) => {
       password: true,
       institution: {
         select: {
+          name: true,
+        },
+      },
+      accounts: {
+        select: {
           id: true,
-
           name: true,
         },
       },
@@ -68,15 +81,24 @@ const scrapAction = async (context: TokenizedContext) => {
     userCredentials.map(async (credentials) => {
       const bank = credentials.institution.name;
       if (bank === 'COMMONWEALTH') {
-        const commonWealthMovements = await requestCommonWealthScrap({
-          client_number: credentials.username,
-          password: credentials.password,
-        });
+        const commonWealthScraps = await Promise.all(
+          credentials.accounts.map(async (account) => {
+            const movements = await requestCommonWealthScrap({
+              client_number: credentials.username,
+              password: credentials.password,
+            });
 
-        await saveCommonWealthMovements(
-          commonWealthMovements,
-          token.userId,
-          credentials.institution.id
+            return {
+              accountId: account.id,
+              movements,
+            };
+          })
+        );
+
+        await Promise.all(
+          commonWealthScraps.map(async (scrap) => {
+            await saveCommonWealthMovements(scrap.movements, scrap.accountId);
+          })
         );
       }
     })

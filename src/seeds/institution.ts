@@ -9,12 +9,10 @@ export const institutionsData: InstitutionsData<'santander' | 'commonWealth'> =
     santander: {
       id: 1,
       name: 'SANTANDER',
-      currency: 'CLP',
     },
     commonWealth: {
       id: 2,
       name: 'COMMONWEALTH',
-      currency: 'AUD',
     },
   };
 
