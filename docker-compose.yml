@@ -6,6 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     command: npm run dev
+    restart: always
     env_file:
       - .env
     ports:
@@ -15,6 +16,8 @@ services:
       - ./prisma/:/app/prisma
     networks:
       - fintree-network
+    depends_on:
+      - fintree-db
 
   fintree-db:
     image: postgres
