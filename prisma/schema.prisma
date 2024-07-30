@@ -97,8 +97,8 @@ model Movement {
   groupMovementId Int?
   categoryId      Int?
   pending         Boolean @default(false)
-  date            String
-  valueDate       String
+  date            DateTime
+  valueDate       DateTime
   description     String
   userDescription String?
   amount          Float

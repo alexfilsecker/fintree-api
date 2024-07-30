@@ -75,8 +75,6 @@ const scrapAction = async (context: TokenizedContext) => {
     },
   });
 
-  console.log('started');
-
   await Promise.all(
     userCredentials.map(async (credentials) => {
       const bank = credentials.institution.name;

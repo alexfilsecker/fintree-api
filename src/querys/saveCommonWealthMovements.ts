@@ -1,3 +1,4 @@
+import stringToDate from '../utils/stringToDate';
 import { CommonWealthReturnData } from '../service/scraper';
 import prisma from '../utils/prismaClient';
 
@@ -5,29 +6,22 @@ const saveCommonWealthMovements = async (
   movements: CommonWealthReturnData,
   accountId: number
 ) => {
-  console.log(movements);
-
   await Promise.all(
     movements.pending.movements.map(async (movement) => {
-      await prisma.movement.upsert({
+      await prisma.movement.deleteMany({
         where: {
-          accountId_valueDate_description_amount: {
-            accountId: accountId,
-            valueDate: movement.value_date,
-            amount: movement.ammount,
-            description: movement.description,
-          },
-        },
-        create: {
-          accountId: accountId,
-          amount: movement.ammount,
-          date: movement.date,
-          valueDate: movement.value_date,
+          account: { credentials: { institution: { name: 'COMMONWEALTH' } } },
           pending: true,
-          description: movement.description,
         },
-        update: {
-          date: movement.date,
+      });
+      await prisma.movement.createMany({
+        data: {
+          accountId: accountId,
+          date: stringToDate(movement.date),
+          valueDate: stringToDate(movement.value_date),
+          amount: movement.ammount,
+          balance: movement.balance,
+          description: movement.description,
           pending: true,
         },
       });
@@ -40,22 +34,23 @@ const saveCommonWealthMovements = async (
         where: {
           accountId_valueDate_description_amount: {
             accountId: accountId,
-            valueDate: movement.value_date,
+            valueDate: stringToDate(movement.value_date),
             amount: movement.ammount,
             description: movement.description,
           },
         },
         create: {
           accountId: accountId,
-          date: movement.date,
-          valueDate: movement.value_date,
+          date: stringToDate(movement.date),
+          valueDate: stringToDate(movement.value_date),
           amount: movement.ammount,
           balance: movement.balance,
           description: movement.description,
           pending: false,
         },
         update: {
-          date: movement.date,
+          date: stringToDate(movement.date),
+          valueDate: stringToDate(movement.value_date),
           balance: movement.balance,
           pending: false,
         },
