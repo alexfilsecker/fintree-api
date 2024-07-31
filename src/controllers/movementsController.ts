@@ -13,6 +13,7 @@ const getMovementsAction = async (context: TokenizedContext) => {
       account: { credentials: { userId: token.userId } },
     },
     select: {
+      id: true,
       account: {
         select: {
           id: true,
@@ -38,6 +39,7 @@ const getMovementsAction = async (context: TokenizedContext) => {
   });
 
   const movements = movementsPrisma.map((movement) => ({
+    id: movement.id,
     institution: movement.account.credentials.institution.name,
     pending: movement.pending,
     amount: movement.amount,
