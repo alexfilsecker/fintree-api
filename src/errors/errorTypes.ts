@@ -24,6 +24,14 @@ type CLoginError = NormalError & {
   errorIn: ErrorInType;
 };
 
+type CBadRequestError = NormalError & {
+  type: 'BadRequestError';
+};
+
+type CBadQueryError = NormalError & {
+  type: 'BadQueryError';
+};
+
 type CTokenError = NormalError & {
   type: 'TokenError';
 };
@@ -33,4 +41,6 @@ export type ErrorData =
   | CError
   | CValidationError
   | CLoginError
+  | CBadRequestError
+  | CBadQueryError
   | CTokenError;

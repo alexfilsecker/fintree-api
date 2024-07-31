@@ -1,6 +1,8 @@
 import { StatusCode } from 'hono/utils/http-status';
 import { ErrorData } from './errorTypes';
 import { MyLoginError } from './loginError';
+import { MyBadRequestError } from './badRequestError';
+import { MyBadQueryError } from './badQueryError';
 
 type HandleErrorReturn = {
   errorStatus: StatusCode;
@@ -27,6 +29,19 @@ export const handleError = (error: unknown): HandleErrorReturn => {
         type: 'LoginError',
         message: error.message,
         errorIn: error.errorIn,
+      };
+    } else if (error instanceof MyBadRequestError) {
+      errorStatus = 400;
+      errorData = {
+        type: 'BadRequestError',
+        message: error.message,
+      };
+    } else if (error instanceof MyBadQueryError) {
+      errorStatus = 404;
+      errorData = {
+        type: 'BadQueryError',
+        message: error.message,
+        stack: error.stack,
       };
     }
   }

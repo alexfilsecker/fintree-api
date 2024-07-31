@@ -4,6 +4,10 @@ import { TokenizedContext } from '../middleware/verifyToken';
 import prisma from '../utils/prismaClient';
 import { requestCommonWealthScrap } from '../service/scraper';
 import saveCommonWealthMovements from '../querys/saveCommonWealthMovements';
+import { ContextWithMovementId } from '../routes/movementRouter';
+import { PatchUserDescriptionBodyType } from '../middleware/validators/movementsValidator';
+import { MyBadQueryError } from '../errors/badQueryError';
+import { MyBadRequestError } from '../errors/badRequestError';
 
 const getMovementsAction = async (context: TokenizedContext) => {
   const token = context.var.tokenData;
@@ -51,6 +55,47 @@ const getMovementsAction = async (context: TokenizedContext) => {
   }));
 
   return { movements };
+};
+
+const patchUserDescriptionAction = async (context: ContextWithMovementId) => {
+  const { movementId, tokenData } = context.var;
+
+  const { userDescription } =
+    await context.req.json<PatchUserDescriptionBodyType>();
+
+  const movement = await prisma.movement.findFirst({
+    where: {
+      id: movementId,
+    },
+    select: {
+      account: {
+        select: {
+          credentials: {
+            select: { userId: true },
+          },
+        },
+      },
+    },
+  });
+
+  if (movement === null) {
+    throw new MyBadQueryError('Movement not found');
+  }
+
+  if (movement.account.credentials.userId !== tokenData.userId) {
+    throw new MyBadRequestError('You are not the owner of this movement');
+  }
+
+  await prisma.movement.update({
+    where: {
+      id: movementId,
+    },
+    data: {
+      userDescription,
+    },
+  });
+
+  return { message: 'User description updated' };
 };
 
 const scrapAction = async (context: TokenizedContext) => {
@@ -110,6 +155,8 @@ const scrapAction = async (context: TokenizedContext) => {
 const movementController = {
   scrap: async (c: Context) => controllerAction(c, scrapAction),
   getMovements: async (c: Context) => controllerAction(c, getMovementsAction),
+  patchUserDescription: async (c: Context) =>
+    controllerAction(c, patchUserDescriptionAction),
 };
 
 export default movementController;

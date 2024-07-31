@@ -16,7 +16,7 @@ const noTokenError = (context: Context) => {
   return response;
 };
 
-type TokenizedEnv = Env & {
+export type TokenizedEnv = Env & {
   Variables: {
     tokenData: jwt.JwtPayload & TokenData;
   };
