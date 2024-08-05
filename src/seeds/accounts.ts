@@ -6,7 +6,7 @@ const accountsData: Account[] = [
     id: 1,
     name: 'SMART_ACCESS',
     currency: 'AUD',
-    credentialsId: credentialsData.commonWalth.id,
+    credentialsId: credentialsData.commonWealth.id,
   },
 ];
 
@@ -18,8 +18,8 @@ const accountSeed = async (prisma: PrismaClient) => {
           where: { id: accountData.id },
           update: accountData,
           create: accountData,
-        })
-      )
+        }),
+      ),
     );
   } catch (error) {
     console.error('Error seeding account table:', error);

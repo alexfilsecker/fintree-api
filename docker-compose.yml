@@ -9,6 +9,7 @@ services:
     restart: always
     env_file:
       - .env
+      - .env.credentials
     ports:
       - 3030:3000
     volumes:
