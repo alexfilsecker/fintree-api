@@ -1,12 +1,12 @@
 module.exports = {
-  extends: ['standard-with-typescript', 'prettier'],
+  extends: ['next/core-web-vitals', 'love', 'prettier'],
   plugins: ['prettier'],
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
   },
   rules: {
-    '@typescript-eslint/consistent-type-definitions': 'error',
+    '@typescript-eslint/consistent-type-definitions': ['error', 'type'],
     'import/order': [
       'error',
       {
@@ -20,11 +20,8 @@ module.exports = {
           'object',
           'type',
         ],
-        newlinesBetween: 'always',
-        alphabetize: {
-          order: 'asc',
-          caseInsensitive: true,
-        },
+        'newlines-between': 'always',
+        alphabetize: { order: 'asc', caseInsensitive: true },
       },
     ],
   },
