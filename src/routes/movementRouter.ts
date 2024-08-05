@@ -18,7 +18,7 @@ export type ContextWithMovementId = Context<
 >;
 
 movementRouter.patch(
-  '/user-description/:id',
+  '/:id/user-description',
   (context: ContextWithMovementId, next: Next) => {
     const { id } = context.req.param();
     const parsedId = parseInt(id, 10);
