@@ -27,14 +27,14 @@ export const credentialsData: CredentialsData<'santander' | 'commonWealth'> = {
     institutionId: institutionsData.santander.id,
     userId: usersData.alex.id,
     username: santanderUsername,
-    password: hashSync(santanderPassword, genSaltSync()),
+    password: santanderPassword,
   },
   commonWealth: {
     id: 2,
     institutionId: institutionsData.commonWealth.id,
     userId: usersData.alex.id,
     username: commonWealthUsername,
-    password: hashSync(commonWealthPassword, genSaltSync()),
+    password: commonWealthPassword,
   },
 };
 
