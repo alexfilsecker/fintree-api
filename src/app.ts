@@ -6,13 +6,14 @@ import { serve } from '@hono/node-server';
 import authRouter from './routes/authRouter';
 import verifyToken from './middleware/verifyToken';
 import movementRouter from './routes/movementRouter';
+import categoriesRouter from './routes/categoriesRouter';
 
 const app = new Hono();
 
 app.use(
   cors({
     origin: 'http://localhost:3000',
-  })
+  }),
 );
 
 app.use(logger());
@@ -26,5 +27,7 @@ app.route('/auth', authRouter);
 app.use(verifyToken);
 
 app.route('/movements', movementRouter);
+
+app.route('/categories', categoriesRouter);
 
 serve({ fetch: app.fetch });

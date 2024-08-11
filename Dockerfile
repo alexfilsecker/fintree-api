@@ -10,5 +10,5 @@ COPY .env /app/.env
 
 RUN npx prisma generate
 
-COPY src ./src
+COPY . .
 
