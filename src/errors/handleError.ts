@@ -24,19 +24,20 @@ export const handleError = (error: unknown): HandleErrorReturn => {
       stack: error.stack,
     };
     if (error instanceof MyLoginError) {
+      console.log('🚀 - error:', error);
       errorStatus = 401;
       errorData = {
         type: 'LoginError',
         message: error.message,
         errorIn: error.errorIn,
       };
-    } else if (error instanceof MyBadRequestError) {
+    } else if (error.name === 'BadRequestError') {
       errorStatus = 400;
       errorData = {
         type: 'BadRequestError',
         message: error.message,
       };
-    } else if (error instanceof MyBadQueryError) {
+    } else if (error.name === 'BadQueryError') {
       errorStatus = 404;
       errorData = {
         type: 'BadQueryError',

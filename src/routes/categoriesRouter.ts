@@ -39,4 +39,27 @@ categoriesRouter.patch(
   categoriesController.patchCategory,
 );
 
+categoriesRouter.delete(
+  '/:id',
+  (context: ContextWithCategoryId, next: Next) => {
+    const { id } = context.req.param();
+    const parsedId = parseInt(id, 10);
+    if (Number.isNaN(parsedId)) {
+      return context.json(
+        {
+          status: 400,
+          errorData: {
+            type: 'ValidationError',
+            message: 'Id is not a number',
+          },
+        },
+        400,
+      );
+    }
+    context.set('categoryId', parsedId);
+    return next();
+  },
+  categoriesController.deleteCategory,
+);
+
 export default categoriesRouter;

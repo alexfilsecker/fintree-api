@@ -20,7 +20,7 @@ const getCategoriesAction = async (context: TokenizedContext) => {
   return { categories };
 };
 
-const patchCategoryName = async (context: ContextWithCategoryId) => {
+const patchCategoryAction = async (context: ContextWithCategoryId) => {
   const { categoryId, tokenData } = context.var;
 
   const category = await prisma.category.findUnique({
@@ -56,9 +56,53 @@ const patchCategoryName = async (context: ContextWithCategoryId) => {
   return { message: 'Category updated' };
 };
 
+const deleteCategoryAction = async (context: ContextWithCategoryId) => {
+  const { categoryId, tokenData } = context.var;
+
+  const category = await prisma.category.findUnique({
+    where: {
+      id: categoryId,
+    },
+    select: {
+      userId: true,
+    },
+  });
+
+  if (category === null) {
+    throw new MyBadQueryError('Category not found');
+  }
+
+  if (category.userId !== tokenData.userId) {
+    throw new MyBadRequestError('Category not found');
+  }
+
+  const childrenCategories = await prisma.category.findMany({
+    where: {
+      parentCategoryId: categoryId,
+    },
+    select: { id: true },
+  });
+
+  await prisma.$transaction([
+    prisma.category.delete({
+      where: {
+        id: categoryId,
+      },
+    }),
+    prisma.category.updateMany({
+      where: { id: { in: childrenCategories.map((c) => c.id) } },
+      data: { parentCategoryId: null },
+    }),
+  ]);
+
+  return { message: 'Category deleted' };
+};
+
 const categoriesController = {
   getCategories: async (c: Context) => controllerAction(c, getCategoriesAction),
-  patchCategory: async (c: Context) => controllerAction(c, patchCategoryName),
+  patchCategory: async (c: Context) => controllerAction(c, patchCategoryAction),
+  deleteCategory: async (c: Context) =>
+    controllerAction(c, deleteCategoryAction),
 };
 
 export default categoriesController;
