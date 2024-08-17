@@ -65,6 +65,7 @@ const deleteCategoryAction = async (context: ContextWithCategoryId) => {
     },
     select: {
       userId: true,
+      parentCategoryId: true,
     },
   });
 
@@ -83,6 +84,8 @@ const deleteCategoryAction = async (context: ContextWithCategoryId) => {
     select: { id: true },
   });
 
+  const grandParentCategoryId = category.parentCategoryId;
+
   await prisma.$transaction([
     prisma.category.delete({
       where: {
@@ -91,7 +94,11 @@ const deleteCategoryAction = async (context: ContextWithCategoryId) => {
     }),
     prisma.category.updateMany({
       where: { id: { in: childrenCategories.map((c) => c.id) } },
-      data: { parentCategoryId: null },
+      data: { parentCategoryId: grandParentCategoryId },
+    }),
+    prisma.movement.updateMany({
+      where: { categoryId: categoryId },
+      data: { categoryId: grandParentCategoryId },
     }),
   ]);
 
