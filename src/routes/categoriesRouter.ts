@@ -1,7 +1,7 @@
 import categoriesController from '../controllers/categoriesController';
 import { Context, Hono, Next } from 'hono';
 import { TokenizedEnv } from '../middleware/verifyToken';
-import { patchCategoryNameValidator } from '../middleware/validators/categoriesValidator';
+import { patchCategoryValidator } from '../middleware/validators/categoriesValidator';
 
 const categoriesRouter = new Hono();
 
@@ -16,7 +16,7 @@ export type ContextWithCategoryId = Context<
 >;
 
 categoriesRouter.patch(
-  '/:id/name',
+  '/:id',
   (context: ContextWithCategoryId, next: Next) => {
     const { id } = context.req.param();
     const parsedId = parseInt(id, 10);
@@ -35,8 +35,8 @@ categoriesRouter.patch(
     context.set('categoryId', parsedId);
     return next();
   },
-  patchCategoryNameValidator,
-  categoriesController.patchCategoryName,
+  patchCategoryValidator,
+  categoriesController.patchCategory,
 );
 
 export default categoriesRouter;

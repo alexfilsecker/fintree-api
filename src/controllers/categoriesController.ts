@@ -20,7 +20,7 @@ const getCategoriesAction = async (context: TokenizedContext) => {
   return { categories };
 };
 
-const patchCategoryNameAction = async (context: ContextWithCategoryId) => {
+const patchCategoryName = async (context: ContextWithCategoryId) => {
   const { categoryId, tokenData } = context.var;
 
   const category = await prisma.category.findUnique({
@@ -40,7 +40,8 @@ const patchCategoryNameAction = async (context: ContextWithCategoryId) => {
     throw new MyBadRequestError('Category not found');
   }
 
-  const { name } = await context.req.json<PatchCategoryNameBodyType>();
+  const { name, parentId } =
+    await context.req.json<PatchCategoryNameBodyType>();
 
   await prisma.category.update({
     where: {
@@ -48,16 +49,16 @@ const patchCategoryNameAction = async (context: ContextWithCategoryId) => {
     },
     data: {
       name,
+      parentCategoryId: parentId,
     },
   });
 
-  return { message: 'Category name updated' };
+  return { message: 'Category updated' };
 };
 
 const categoriesController = {
   getCategories: async (c: Context) => controllerAction(c, getCategoriesAction),
-  patchCategoryName: async (c: Context) =>
-    controllerAction(c, patchCategoryNameAction),
+  patchCategory: async (c: Context) => controllerAction(c, patchCategoryName),
 };
 
 export default categoriesController;

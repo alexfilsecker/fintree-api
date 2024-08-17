@@ -3,25 +3,22 @@ import validationError from './validationError';
 import { zValidator } from '@hono/zod-validator';
 import { MiddlewareHandler } from 'hono';
 
-const patchCategoryNameBodySchema = z.object({
-  name: z.string().min(1),
+const patchCategoryBodySchema = z.object({
+  name: z.string().min(1).optional(),
+  parentId: z.number().int().optional().nullable(),
 });
 
-const patchCategoryNameValidator = zValidator(
+const patchCategoryValidator = zValidator(
   'json',
-  patchCategoryNameBodySchema,
+  patchCategoryBodySchema,
   validationError,
 );
 
-type outPatchCategoryName =
-  typeof patchCategoryNameValidator extends MiddlewareHandler<
-    any,
-    any,
-    infer Out
-  >
+type outPatchCategory =
+  typeof patchCategoryValidator extends MiddlewareHandler<any, any, infer Out>
     ? Out['out']
     : never;
 
-export type PatchCategoryNameBodyType = outPatchCategoryName['json'];
+export type PatchCategoryNameBodyType = outPatchCategory['json'];
 
-export { patchCategoryNameValidator };
+export { patchCategoryValidator };
