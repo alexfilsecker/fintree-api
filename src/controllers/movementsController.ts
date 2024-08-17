@@ -63,7 +63,7 @@ const patchUserDescriptionAction = async (context: ContextWithMovementId) => {
   const { userDescription } =
     await context.req.json<PatchUserDescriptionBodyType>();
 
-  const movement = await prisma.movement.findFirst({
+  const movement = await prisma.movement.findUnique({
     where: {
       id: movementId,
     },
@@ -137,16 +137,16 @@ const scrapAction = async (context: TokenizedContext) => {
               accountId: account.id,
               movements,
             };
-          })
+          }),
         );
 
         await Promise.all(
           commonWealthScraps.map(async (scrap) => {
             await saveCommonWealthMovements(scrap.movements, scrap.accountId);
-          })
+          }),
         );
       }
-    })
+    }),
   );
 
   return { message: 'Scraped' };

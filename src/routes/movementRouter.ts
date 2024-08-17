@@ -23,19 +23,22 @@ movementRouter.patch(
     const { id } = context.req.param();
     const parsedId = parseInt(id, 10);
     if (Number.isNaN(parsedId)) {
-      return context.json({
-        status: 400,
-        errorData: {
-          type: 'ValidationError',
-          message: 'Id is not a number',
+      return context.json(
+        {
+          status: 400,
+          errorData: {
+            type: 'ValidationError',
+            message: 'Id is not a number',
+          },
         },
-      });
+        400,
+      );
     }
     context.set('movementId', parsedId);
     return next();
   },
   patchUserDescriptionValidator,
-  movementController.patchUserDescription
+  movementController.patchUserDescription,
 );
 
 export default movementRouter;
