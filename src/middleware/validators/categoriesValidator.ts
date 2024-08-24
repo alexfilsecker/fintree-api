@@ -21,4 +21,22 @@ type outPatchCategory =
 
 export type PatchCategoryNameBodyType = outPatchCategory['json'];
 
-export { patchCategoryValidator };
+const createCategoryBodySchema = z.object({
+  name: z.string().min(1),
+  parentId: z.number().int().nullable(),
+});
+
+const createCategoryValidator = zValidator(
+  'json',
+  createCategoryBodySchema,
+  validationError,
+);
+
+type outCreateCategory =
+  typeof createCategoryValidator extends MiddlewareHandler<any, any, infer Out>
+    ? Out['out']
+    : never;
+
+export type CreateCategoryBodyType = outCreateCategory['json'];
+
+export { patchCategoryValidator, createCategoryValidator };

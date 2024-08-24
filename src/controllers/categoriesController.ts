@@ -1,6 +1,9 @@
 import { MyBadQueryError } from '../errors/badQueryError';
 import { MyBadRequestError } from '../errors/badRequestError';
-import { PatchCategoryNameBodyType } from '../middleware/validators/categoriesValidator';
+import {
+  CreateCategoryBodyType,
+  PatchCategoryNameBodyType,
+} from '../middleware/validators/categoriesValidator';
 import { TokenizedContext } from '../middleware/verifyToken';
 import { ContextWithCategoryId } from '../routes/categoriesRouter';
 import prisma from '../utils/prismaClient';
@@ -105,11 +108,31 @@ const deleteCategoryAction = async (context: ContextWithCategoryId) => {
   return { message: 'Category deleted' };
 };
 
+const createCategoryAction = async (context: TokenizedContext) => {
+  const token = context.var.tokenData;
+  console.log('🚀 - token:', token);
+  const { name, parentId } = await context.req.json<CreateCategoryBodyType>();
+  console.log('🚀 - parentId:', parentId);
+  console.log('🚀 - name:', name);
+
+  await prisma.category.create({
+    data: {
+      name,
+      parentCategoryId: parentId,
+      userId: token.userId,
+    },
+  });
+
+  return { message: 'Category created' };
+};
+
 const categoriesController = {
   getCategories: async (c: Context) => controllerAction(c, getCategoriesAction),
   patchCategory: async (c: Context) => controllerAction(c, patchCategoryAction),
   deleteCategory: async (c: Context) =>
     controllerAction(c, deleteCategoryAction),
+  createCategory: async (c: Context) =>
+    controllerAction(c, createCategoryAction),
 };
 
 export default categoriesController;

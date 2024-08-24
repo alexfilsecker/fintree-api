@@ -24,7 +24,6 @@ export const handleError = (error: unknown): HandleErrorReturn => {
       stack: error.stack,
     };
     if (error instanceof MyLoginError) {
-      console.log('🚀 - error:', error);
       errorStatus = 401;
       errorData = {
         type: 'LoginError',

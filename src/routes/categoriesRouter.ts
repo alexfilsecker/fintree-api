@@ -1,7 +1,10 @@
 import categoriesController from '../controllers/categoriesController';
 import { Context, Hono, Next } from 'hono';
 import { TokenizedEnv } from '../middleware/verifyToken';
-import { patchCategoryValidator } from '../middleware/validators/categoriesValidator';
+import {
+  createCategoryValidator,
+  patchCategoryValidator,
+} from '../middleware/validators/categoriesValidator';
 
 const categoriesRouter = new Hono();
 
@@ -60,6 +63,12 @@ categoriesRouter.delete(
     return next();
   },
   categoriesController.deleteCategory,
+);
+
+categoriesRouter.put(
+  '/',
+  createCategoryValidator,
+  categoriesController.createCategory,
 );
 
 export default categoriesRouter;
