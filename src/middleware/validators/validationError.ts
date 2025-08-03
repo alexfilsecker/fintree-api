@@ -1,6 +1,6 @@
-import { MyResponse } from '../../controllers/controllerAction';
+import { MyResponse } from '@/controllers/controllerAction';
 import { Context } from 'hono';
-import { ZodError } from 'zod';
+import { type $ZodError } from 'zod/v4/core';
 
 type ZodValidationErrorType =
   | {
@@ -10,7 +10,7 @@ type ZodValidationErrorType =
   | {
       success: false;
       data: unknown;
-      error: ZodError;
+      error: $ZodError;
     };
 
 const validationError = (result: ZodValidationErrorType, c: Context) => {
@@ -22,7 +22,7 @@ const validationError = (result: ZodValidationErrorType, c: Context) => {
       errorData: {
         type: 'ValidationError',
         message: 'Bad Request',
-        validationErrors: result.error.errors,
+        validationErrors: result.error.issues,
       },
     };
 

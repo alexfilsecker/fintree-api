@@ -1,7 +1,7 @@
 import { Context } from 'hono';
 import { StatusCode } from 'hono/utils/http-status';
-import { handleError } from '../errors/handleError';
-import { ErrorData } from '../errors/errorTypes';
+import { handleError } from '@/errors/handleError';
+import { ErrorData } from '@/errors/errorTypes';
 
 type SuccesfulResponse = {
   status: 200;
@@ -17,7 +17,7 @@ export type MyResponse = SuccesfulResponse | ErrorResponse;
 
 const controllerAction = async (
   c: Context,
-  action: (c: Context) => Promise<unknown>
+  action: (c: Context) => Promise<unknown>,
 ) => {
   let actionResponse: unknown;
   let response: MyResponse;

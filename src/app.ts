@@ -30,4 +30,4 @@ app.route('/movements', movementRouter);
 
 app.route('/categories', categoriesRouter);
 
-serve({ fetch: app.fetch });
+serve({ fetch: app.fetch, port: 3030 });

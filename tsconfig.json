@@ -1,14 +1,23 @@
 {
   "compilerOptions": {
-    "allowJs": false,
-    "strict": true, // Enable strict type checking
-    "target": "es5", // Set the target JavaScript version (e.g., es2015, esnext)
-    "module": "commonjs", // Specify the module system (e.g., commonjs, amd, system)
-    "noImplicitAny": true, // Disallow implicit 'any' type
-    "esModuleInterop": true, // Enable ES module interop for TypeScript 2.5+
-    "sourceMap": true, // Generate source maps for debugging
-    "outDir": "dist" // Output directory for compiled JavaScript
+    "target": "ES2024", // Modern JS features
+    "module": "NodeNext", // Node ESM + TS compatibility
+    "moduleResolution": "NodeNext", // Required for "NodeNext"
+    "esModuleInterop": true, // Allows import/export compatibility
+    "forceConsistentCasingInFileNames": true,
+    "strict": true, // Enables all strict type-checking
+    "skipLibCheck": true, // Skips type checks for node_modules
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true, // Allow importing JSON files
+    "isolatedModules": true, // For ts-node compatibility
+    "noEmit": true, // Don't emit JS (you use ts-node)
+    "types": ["node"], // Auto import Node types
+    "baseUrl": ".", // Base directory for module resolution
+    "paths": {
+      "@prisma/*": ["prisma-gen/*"], // Adjusted for local Prisma client
+      "@/*": ["src/*"] // Supports local module resolution
+    }
   },
-  "include": ["src/**/*.ts"], // Include all TypeScript files in the 'src' directory
-  "exclude": ["node_modules"] // Exclude the 'node_modules' folder
+  "include": ["src", "prisma"], // Adjust if needed
+  "exclude": ["node_modules", "dist"]
 }

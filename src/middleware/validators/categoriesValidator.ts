@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import validationError from './validationError';
 import { zValidator } from '@hono/zod-validator';
-import { MiddlewareHandler } from 'hono';
+import { MiddlewareHandler, Env } from 'hono';
 
 const patchCategoryBodySchema = z.object({
   name: z.string().min(1).optional(),
@@ -15,7 +15,11 @@ const patchCategoryValidator = zValidator(
 );
 
 type outPatchCategory =
-  typeof patchCategoryValidator extends MiddlewareHandler<any, any, infer Out>
+  typeof patchCategoryValidator extends MiddlewareHandler<
+    Env,
+    string,
+    infer Out
+  >
     ? Out['out']
     : never;
 
@@ -33,7 +37,11 @@ const createCategoryValidator = zValidator(
 );
 
 type outCreateCategory =
-  typeof createCategoryValidator extends MiddlewareHandler<any, any, infer Out>
+  typeof createCategoryValidator extends MiddlewareHandler<
+    Env,
+    string,
+    infer Out
+  >
     ? Out['out']
     : never;
 

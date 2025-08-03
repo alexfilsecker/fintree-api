@@ -1,10 +1,10 @@
-import stringToDate from '../utils/stringToDate';
-import { CommonWealthReturnData } from '../service/scraper';
-import prisma from '../utils/prismaClient';
+import stringToDate from '@/utils/stringToDate';
+import { CommonWealthReturnData } from '@/service/scraper';
+import prisma from '@/utils/prismaClient';
 
 const saveCommonWealthMovements = async (
   movements: CommonWealthReturnData,
-  accountId: number
+  accountId: number,
 ) => {
   await Promise.all(
     movements.pending.movements.map(async (movement) => {
@@ -25,7 +25,7 @@ const saveCommonWealthMovements = async (
           pending: true,
         },
       });
-    })
+    }),
   );
 
   await Promise.all(
@@ -55,7 +55,7 @@ const saveCommonWealthMovements = async (
           pending: false,
         },
       });
-    })
+    }),
   );
 };
 

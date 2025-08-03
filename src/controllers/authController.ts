@@ -3,12 +3,12 @@ import controllerAction from './controllerAction';
 import {
   LoginBodyType,
   RefreshBodyType,
-} from '../middleware/validators/authValidator';
-import prisma from '../utils/prismaClient';
+} from '@/middleware/validators/authValidator';
+import prisma from '@/utils/prismaClient';
 import { compareSync } from 'bcrypt';
-import makeTokens from '../utils/tokens/makeTokens';
-import { MyLoginError } from '../errors/loginError';
-import getTokenEnvs from '../utils/tokens/getTokenEnvs';
+import makeTokens from '@/utils/tokens/makeTokens';
+import { MyLoginError } from '@/errors/loginError';
+import getTokenEnvs from '@/utils/tokens/getTokenEnvs';
 import jwt from 'jsonwebtoken';
 
 type LoginActionResponse = {

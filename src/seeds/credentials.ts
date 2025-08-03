@@ -1,12 +1,9 @@
 import { PrismaClient, Credentials } from '@prisma/client';
 
-import { hashSync, genSaltSync } from 'bcrypt';
 import { institutionsData } from './institution';
 import { usersData } from './user';
 
-type CredentialsData<T extends string> = {
-  [key in T]: Credentials;
-};
+type CredentialsData<T extends string> = Record<T, Credentials>;
 
 const retrieveEnv = (env: string): string => {
   const value = process.env[env];

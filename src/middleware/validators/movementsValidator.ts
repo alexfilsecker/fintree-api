@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import validationError from './validationError';
 import { zValidator } from '@hono/zod-validator';
-import { MiddlewareHandler } from 'hono';
+import { MiddlewareHandler, Env } from 'hono';
 
 const patchUserDescriptionBodySchema = z.object({
   userDescription: z.string().min(1),
@@ -10,13 +10,13 @@ const patchUserDescriptionBodySchema = z.object({
 const patchUserDescriptionValidator = zValidator(
   'json',
   patchUserDescriptionBodySchema,
-  validationError
+  validationError,
 );
 
 type outPatchUserDescription =
   typeof patchUserDescriptionValidator extends MiddlewareHandler<
-    any,
-    any,
+    Env,
+    string,
     infer Out
   >
     ? Out['out']

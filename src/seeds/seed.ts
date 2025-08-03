@@ -1,9 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../../prisma-gen/client';
 
-import userSeed from '../src/seeds/user';
-import institutionSeed from '../src/seeds/institution';
-import credentialsSeed from '../src/seeds/credentials';
-import accountSeed from '../src/seeds/accounts';
+import userSeed from './user';
+import institutionSeed from './institution';
+import credentialsSeed from './credentials';
+import accountSeed from './accounts';
 
 const prisma = new PrismaClient();
 

@@ -1,10 +1,10 @@
-import categoriesController from '../controllers/categoriesController';
+import categoriesController from '@/controllers/categoriesController';
 import { Context, Hono, Next } from 'hono';
-import { TokenizedEnv } from '../middleware/verifyToken';
+import { TokenizedEnv } from '@/middleware/verifyToken';
 import {
   createCategoryValidator,
   patchCategoryValidator,
-} from '../middleware/validators/categoriesValidator';
+} from '@/middleware/validators/categoriesValidator';
 
 const categoriesRouter = new Hono();
 

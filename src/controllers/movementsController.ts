@@ -1,13 +1,13 @@
 import { Context } from 'hono';
 import controllerAction from './controllerAction';
-import { TokenizedContext } from '../middleware/verifyToken';
-import prisma from '../utils/prismaClient';
-import { requestCommonWealthScrap } from '../service/scraper';
-import saveCommonWealthMovements from '../querys/saveCommonWealthMovements';
-import { ContextWithMovementId } from '../routes/movementRouter';
-import { PatchUserDescriptionBodyType } from '../middleware/validators/movementsValidator';
-import { MyBadQueryError } from '../errors/badQueryError';
-import { MyBadRequestError } from '../errors/badRequestError';
+import { TokenizedContext } from '@/middleware/verifyToken';
+import prisma from '@/utils/prismaClient';
+import { requestCommonWealthScrap } from '@/service/scraper';
+import saveCommonWealthMovements from '@/querys/saveCommonWealthMovements';
+import { ContextWithMovementId } from '@/routes/movementRouter';
+import { PatchUserDescriptionBodyType } from '@/middleware/validators/movementsValidator';
+import { MyBadQueryError } from '@/errors/badQueryError';
+import { MyBadRequestError } from '@/errors/badRequestError';
 
 const getMovementsAction = async (context: TokenizedContext) => {
   const token = context.var.tokenData;

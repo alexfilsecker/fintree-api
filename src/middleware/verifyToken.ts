@@ -1,8 +1,8 @@
-import getTokenEnvs from '../utils/tokens/getTokenEnvs';
-import { ErrorResponse } from '../controllers/controllerAction';
+import getTokenEnvs from '@/utils/tokens/getTokenEnvs';
+import { ErrorResponse } from '@/controllers/controllerAction';
 import type { Context, Env, Next } from 'hono';
 import jwt from 'jsonwebtoken';
-import { TokenData } from '../utils/tokens/makeTokens';
+import { TokenData } from '@/utils/tokens/makeTokens';
 
 const noTokenError = (context: Context) => {
   const response: ErrorResponse = {
@@ -44,7 +44,7 @@ const verifyToken = async (context: TokenizedContext, next: Next) => {
       throw new Error('Token is invalid');
     }
     context.set('tokenData', decodedToken as jwt.JwtPayload & TokenData);
-  } catch (error) {
+  } catch {
     const response: ErrorResponse = {
       status: 401,
       errorData: {

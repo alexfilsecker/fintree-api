@@ -1,4 +1,4 @@
-import { PrismaClient, Account } from '@prisma/client';
+import { type PrismaClient, Account } from '@prisma/client';
 import { credentialsData } from './credentials';
 
 const accountsData: Account[] = [

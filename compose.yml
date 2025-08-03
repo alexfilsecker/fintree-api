@@ -8,13 +8,16 @@ services:
     command: npm run dev
     restart: always
     env_file:
-      - .env
-      - .env.credentials
+      - .envs/.local/.api.env
     ports:
-      - 3030:3000
+      - 3030:3030
     volumes:
-      - ./src/:/app/src
-      - ./prisma/:/app/prisma
+      - type: bind
+        source: ./src
+        target: /app/src
+      - type: bind
+        source: ./prisma
+        target: /app/prisma
     networks:
       - fintree-network
     depends_on:
@@ -23,10 +26,8 @@ services:
   fintree-db:
     image: postgres
     container_name: fintree-db
-    environment:
-      POSTGRES_USER: fintree
-      POSTGRES_PASSWORD: fintree
-      POSTGRES_DB: fintree
+    env_file:
+      - .envs/.local/.postgres.env
     ports:
       - 5432:5432
     volumes:

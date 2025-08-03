@@ -1,8 +1,6 @@
 import { PrismaClient, Institution } from '@prisma/client';
 
-type InstitutionsData<T extends string> = {
-  [key in T]: Institution;
-};
+type InstitutionsData<T extends string> = Record<T, Institution>;
 
 export const institutionsData: InstitutionsData<'santander' | 'commonWealth'> =
   {
@@ -24,8 +22,8 @@ const institutionSeed = async (prisma: PrismaClient) => {
           where: { id: institutionData.id },
           update: institutionData,
           create: institutionData,
-        })
-      )
+        }),
+      ),
     );
   } catch (error) {
     console.error('Error seeding institution table:', error);

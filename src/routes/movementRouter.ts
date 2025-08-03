@@ -1,7 +1,7 @@
 import { Context, Hono, Next } from 'hono';
-import movementController from '../controllers/movementsController';
-import { TokenizedEnv } from '../middleware/verifyToken';
-import { patchUserDescriptionValidator } from '../middleware/validators/movementsValidator';
+import movementController from '@/controllers/movementsController';
+import { TokenizedEnv } from '@/middleware/verifyToken';
+import { patchUserDescriptionValidator } from '@/middleware/validators/movementsValidator';
 
 const movementRouter = new Hono();
 

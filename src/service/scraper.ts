@@ -38,7 +38,7 @@ type SantanderReturnData = {
 };
 
 export const requestSantanderScrap = async (
-  body: SantanderRequestBody
+  body: SantanderRequestBody,
 ): Promise<SantanderReturnData> => {
   const url = `${getScraperURL()}/santander`;
   const response = await axios.post<SantanderReturnData>(url, body);
@@ -46,7 +46,7 @@ export const requestSantanderScrap = async (
 };
 
 export const requestCommonWealthScrap = async (
-  body: CommonWealthRequestBody
+  body: CommonWealthRequestBody,
 ): Promise<CommonWealthReturnData> => {
   const url = `${getScraperURL()}/common-wealth`;
   const response = await axios.post<CommonWealthReturnData>(url, body);

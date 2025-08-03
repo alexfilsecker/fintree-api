@@ -2,9 +2,11 @@ import { PrismaClient, User } from '@prisma/client';
 
 import { hashSync, genSaltSync } from 'bcrypt';
 
-type UsersData<T extends string> = {
-  [key in T]: User;
-};
+// Load environment variables from .cred.env
+import dotenv from 'dotenv';
+dotenv.config({ path: '.creds.env', debug: true });
+
+type UsersData<T extends string> = Record<T, User>;
 
 const alexPassword = process.env.ALEX_PASSWORD;
 

@@ -1,9 +1,9 @@
-import { ZodIssue } from 'zod';
+import { type $ZodIssue } from 'zod/v4/core';
 import { ErrorInType } from './loginError';
 
 type NormalError = {
   message: string;
-  stack?: string;
+  stack?: string | string[];
 };
 
 type CUnknownError = NormalError & {
@@ -16,7 +16,7 @@ type CError = NormalError & {
 
 type CValidationError = NormalError & {
   type: 'ValidationError';
-  validationErrors: ZodIssue[];
+  validationErrors: $ZodIssue[];
 };
 
 type CLoginError = NormalError & {

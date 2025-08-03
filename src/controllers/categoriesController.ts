@@ -1,12 +1,12 @@
-import { MyBadQueryError } from '../errors/badQueryError';
-import { MyBadRequestError } from '../errors/badRequestError';
+import { MyBadQueryError } from '@/errors/badQueryError';
+import { MyBadRequestError } from '@/errors/badRequestError';
 import {
   CreateCategoryBodyType,
   PatchCategoryNameBodyType,
-} from '../middleware/validators/categoriesValidator';
-import { TokenizedContext } from '../middleware/verifyToken';
-import { ContextWithCategoryId } from '../routes/categoriesRouter';
-import prisma from '../utils/prismaClient';
+} from '@/middleware/validators/categoriesValidator';
+import { TokenizedContext } from '@/middleware/verifyToken';
+import { ContextWithCategoryId } from '@/routes/categoriesRouter';
+import prisma from '@/utils/prismaClient';
 import controllerAction from './controllerAction';
 import { Context } from 'hono';
 
